@@ -1,24 +1,19 @@
-from django.shortcuts import render
-posts = [
-	{
-    	'author': 'Администратор',
-    	'title': 'Это первый пост',
-    	'content': 'Содержание первого поста.',
-    	'date_posted': '12 мая, 2022'
-	},
-	{
-    	'author': 'Пользователь',
-    	'title': 'Это второй пост',
-    	'content': 'Подробное содержание второго поста.',
-    	'date_posted': '13 мая, 2022'
-	}
-]
- 
+import logging
+
+# Настройка логирования
+logging.basicConfig(filename='debug.log', level=logging.DEBUG, 
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+
+logger = logging.getLogger(__name__)
+
 def home(request):
-	context = {
-    	'posts': posts
-	}
-	return render(request, 'blog/home.html', context)
- 
+    logger.debug("Вызов представления home")
+    context = {
+        'posts': Post.objects.all()
+    }
+    logger.debug("Контекст в home: %s", context)
+    return render(request, 'blog/home.html', context)
+
 def about(request):
-	return render(request, 'blog/about.html', {'title': 'О клубе Python Bytes'})
+    logger.debug("Вызов представления about")
+    return render(request, 'blog/about.html', {'title': 'О клубе Python Bytes'})
